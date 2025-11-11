@@ -1,10 +1,18 @@
+/* Load Tailwind */
 @import "tailwindcss";
 
+/* -------------------------------------------
+   BASE THEME VARIABLES (Light mode defaults)
+-------------------------------------------- */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #960000;
+
+  /* Scroll progress controls text color blending */
+  --scroll-progress: 0;
 }
 
+/* Map variables into Tailwind's theme system */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -12,15 +20,66 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* -------------------------------------------
+   DARK MODE VARIABLES
+-------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #ffffff;
   }
 }
 
+/* -------------------------------------------
+   GLOBAL BODY STYLING
+   - gradient background (maroon → black)
+   - radial glow for depth
+   - ensures full-height pages
+-------------------------------------------- */
 body {
-  background: var(--background);
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(80, 0, 0, 0.35),
+      transparent 70%
+    ),
+    linear-gradient(to bottom, #320000, #000000);
+  
+  /* Default text color before scroll adjustment */
   color: var(--foreground);
+  min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
+  background-repeat: no-repeat;
 }
+
+/* -------------------------------------------
+   SCROLL-BASED TEXT COLOR ADJUSTMENT
+   Text becomes darker as background darkens.
+-------------------------------------------- */
+/* Only headers change color on scroll */
+h1, h2, h3 {
+  color: color-mix(
+    in srgb,
+    rgb(255, 117, 62) calc(100% * (1 - var(--scroll-progress))),
+    var(--foreground)
+  );
+  transition: color 0.2s linear;
+}
+
+h1 span,
+h2 span,
+h3 span {
+  color: inherit !important;
+}
+
+/* Normal text stays constant */
+p, span, li, ul, ol {
+  color: #d4d4d4; /* or text-zinc-300 equivalent */
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+

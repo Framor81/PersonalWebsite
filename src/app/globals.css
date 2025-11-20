@@ -10,6 +10,9 @@
 
   /* Scroll progress controls text color blending */
   --scroll-progress: 0;
+
+  /* Content alignment offset - adjust this to shift content left/right for visual centering */
+  --content-offset-left: -10rem; /* -ml-2 equivalent, change to adjust visual centering */
 }
 
 /* Map variables into Tailwind's theme system */
@@ -37,19 +40,16 @@
    - ensures full-height pages
 -------------------------------------------- */
 body {
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(80, 0, 0, 0.35),
-      transparent 70%
-    ),
-    linear-gradient(to bottom, #320000, #000000);
+  background-color: transparent; /* Let html handle background */
   
   /* Default text color before scroll adjustment */
   color: var(--foreground);
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
-  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: relative;
 }
 
 /* -------------------------------------------
@@ -80,6 +80,68 @@ p, span, li, ul, ol {
 
 html {
   scroll-behavior: smooth;
+  /* Ensure background extends beyond viewport */
+  background-color: #000000; /* Fallback to black at bottom */
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(80, 0, 0, 0.35),
+      transparent 70%
+    ),
+    linear-gradient(to bottom, #320000, #000000);
+  background-attachment: fixed;
+  background-size: 100% 100vh;
+  background-position: center top;
+  background-repeat: no-repeat;
+  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
+/* Ensure html covers full document height */
+html::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(80, 0, 0, 0.35),
+      transparent 70%
+    ),
+    linear-gradient(to bottom, #320000, #000000);
+  z-index: -1;
+  pointer-events: none;
+}
 
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.35s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}

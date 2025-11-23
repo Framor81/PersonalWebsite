@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import CourseworkGrid from "../components/courseWorkGrid";
+import ImageGallery from "../components/imageGallery";
 import ProjectShowcase from "../components/projectShowcase";
 import TableOfContents from "../components/TableOfContents";
 
@@ -42,21 +43,28 @@ export default function AboutPage() {
           id="intro" 
           className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className="max-w-3xl w-full" style={{ marginLeft: 'var(--content-offset-left)' }}>
+          <div className="max-w-5xl w-full" style={{ marginLeft: 'var(--content-offset-left)' }}>
             {!snapMode && (
               <div className="mb-8">
+                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight pr-22 text-center">
+                  <span className="block pl-4 sm:pl-16">Hello!</span>
+                </h1>
                 <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight">
-                  <span className="block pl-4 sm:pl-16">Hello! I&apos;m Francisco X.</span>
-                  <span className="block pl-8 sm:pl-44">Morales Puente</span>
+                  <span className="block pl-8 sm:pl-8"> I&apos;m Francisco X. Morales Puente</span>
                 </h1>
               </div>
             )}
             {snapMode && (
-              <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight mb-12">
-                <span className="block pl-4 sm:pl-16">Hello! I&apos;m Francisco X.</span>
-                <span className="block pl-8 sm:pl-44">Morales Puente</span>
-              </h1>
+              <div className="mb-8">
+                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight pr-22 text-center">
+                  <span className="block pl-4 sm:pl-16">Hello!</span>
+                </h1>
+                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight">
+                  <span className="block pl-8 sm:pl-8">I&apos;m Francisco X. Morales Puente</span>
+                </h1>
+              </div>
             )}
+
 
             {/* Image and Text Layout */}
             <div className="flex flex-col sm:flex-row items-center gap-8 mt-8">
@@ -100,7 +108,7 @@ export default function AboutPage() {
           id="education" 
           className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className={`max-w-3xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
+          <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Education</h2>
             <p className="text-zinc-300 leading-8">
               <strong>Pomona College — Claremont, CA</strong><br />
@@ -121,9 +129,11 @@ export default function AboutPage() {
           id="projects" 
           className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className={`max-w-3xl w-full space-y-10`} style={{ marginLeft: 'var(--content-offset-left)' }}>
-            <h2 className="text-4xl font-semibold text-foreground">Projects</h2>
-            <ProjectShowcase />
+          <div className={`max-w-5xl w-full flex flex-col items-center`} style={{ marginLeft: 'var(--content-offset-left)' }}>
+            <h2 className="text-4xl font-semibold text-foreground mb-16">Projects</h2>
+            <div className="flex-1 flex items-center justify-center">
+              <ProjectShowcase />
+            </div>
           </div>
         </section>
 
@@ -132,7 +142,7 @@ export default function AboutPage() {
           id="experience" 
           className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className={`max-w-3xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
+          <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Experience</h2>
             <p className="text-zinc-300 leading-8">
               Placeholder for experience.
@@ -145,7 +155,7 @@ export default function AboutPage() {
           id="awards" 
           className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className={`max-w-3xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
+          <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Awards & Honors</h2>
             <ul className="list-disc list-inside text-zinc-300 leading-7 space-y-2">
               <li>
@@ -165,23 +175,58 @@ export default function AboutPage() {
           id="gallery" 
           className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className={`max-w-3xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
+          <div className={`max-w-5xl w-full space-y-6`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Gallery</h2>
-            <p className="text-zinc-300">Images will go here.</p>
+            <ImageGallery />
           </div>
         </section>
 
         {/* PERSONAL STORY */}
         <section 
           id="about-me" 
-          className={`min-h-screen flex items-center justify-center px-6 py-20 pb-32 ${snapMode ? "snap-start" : ""}`}
+          className={`min-h-screen flex items-center justify-center px-6 py-20 ${snapMode ? "snap-start" : ""}`}
         >
-          <div className={`max-w-3xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
-            <h2 className="text-4xl font-semibold">More About Me</h2>
-            <p className="text-zinc-300 leading-8">
-              Placeholder for personal story or extended biography.
-            </p>
-          </div>
+  <div
+  className={`max-w-5xl w-full space-y-4`}
+  style={{ marginLeft: 'var(--content-offset-left)' }}
+>
+  <h2 className="text-4xl font-semibold">More About Me</h2>
+  <p className="text-zinc-300 leading-8">
+  My interest in robotics began in high school, where I served as the lead
+  programmer for my FTC team. At Pomona, I joined the Autonomous Robots and
+  Complex Systems (ARCS) Lab under Anthony J. Clark, contributing to synthetic
+  data generation, autonomous navigation, and sim-to-real systems. This work
+  led to two posters at the Southern California Robotics Symposium (SCR 2023 &
+  SCR 2024), where I presented simulation environments built in Blender and
+  Unreal Engine 5 for low-cost robot training.
+  <br /><br />
+  I now work on <em>Eyes in Motion</em>, a SURP-funded project I am continuing
+  as my senior project. Motivated by personal experiences with disability in my
+  family, I am building a real-time webcam-based gaze-tracking interface for
+  assistive mobility control. My work earned 3rd place at the 2025 ACM TAPIA
+  Celebration of Diversity in Computing and focuses on eye segmentation,
+  calibration pipelines, teleoperation feedback, and rule-based navigation for
+  accessible human–robot interaction.
+  <br /><br />
+  I am also the founder and president of the 5C Robotics Club (PORO), where I
+  mentor students across the Claremont Colleges and lead VEX U competition
+  efforts. For the past three years, I’ve served as a TA for Discrete &
+  Functional Programming (Haskell) and Data Structures & Advanced Programming
+  (Java), while supporting first-generation and Latinx students in STEM.
+  <br /><br />
+  I also co-develop <em>P-ickup</em>, a rideshare-matching platform used by
+  Pomona College and ASPC during major travel periods. Built with TypeScript,
+  Python, Pandas, Docker, TailwindCSS, and Supabase, P-ickup uses a custom
+  rule-based, multi-pass matching system to handle a complex NP-hard grouping
+  problem for over 1,200 students seeking airport rides. It has become a
+  reliable campus-scale solution for large travel coordination.
+  <br /><br />
+  Outside of research, 
+  I’m an extrovert who loves soccer, reading light novels, video games,and board game nights.
+  I enjoy making people laugh and bringing people together.
+  Above all, I want to build technologies that make life easier for those who need it most.
+</p>
+</div>
         </section>
 
       </div>

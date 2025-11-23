@@ -17,8 +17,8 @@ export default function ProjectsShowcase() {
         const isDimmed = active !== null && !isActive;
 
         // Larger sizes (feel better)
-        const startSize = 144; // circle
-        const endSize = 256;   // expanded square
+        const startSize = 200; // circle
+        const endSize = 400;   // expanded square
 
         const size = isActive ? endSize : startSize;
 
@@ -55,7 +55,7 @@ export default function ProjectsShowcase() {
                   ? "bg-foreground text-background shadow-2xl"
                   : "bg-zinc-700/40 text-zinc-300"
               }
-              ${isDimmed ? "opacity-40 scale-90 translate-y-4" : ""}
+              ${isDimmed ? "opacity-30 scale-70 translate-y-4" : ""}
             `}
           >
             {isActive ? "Placeholder v2" : proj.title}

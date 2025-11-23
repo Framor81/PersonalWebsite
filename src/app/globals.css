@@ -12,7 +12,7 @@
   --scroll-progress: 0;
 
   /* Content alignment offset - adjust this to shift content left/right for visual centering */
-  --content-offset-left: -10rem; /* -ml-2 equivalent, change to adjust visual centering */
+  --content-offset-left: 12.5rem; /* -ml-2 equivalent, change to adjust visual centering */
 }
 
 /* Map variables into Tailwind's theme system */

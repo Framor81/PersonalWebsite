@@ -158,3 +158,9 @@ html::before {
     margin-left: calc((100% - 100% / var(--viewport-scale)) / 2);
   }
 }
+
+/* Adjust section heights to account for viewport scaling */
+/* When zoom scales content up, we need to reduce the base height proportionally */
+.viewport-scaled section {
+  height: calc(100vh / var(--viewport-scale));
+}

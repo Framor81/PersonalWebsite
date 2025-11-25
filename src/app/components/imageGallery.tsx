@@ -15,8 +15,8 @@ const imageSets = [
   ],
   [
     { src: "/about/Ara.jpeg", alt: "Image 7" },
-    { src: "/about/RockClimbing.jpg", alt: "Image 8" },
-    { src: "/about/Pickup.JPG", alt: "Image 9" },
+    { src: "/about/RockClimbing.JPG", alt: "Image 8" },
+    { src: "/about/Pickup.jpg", alt: "Image 9" },
     { src: "/about/Sequoia2.JPG", alt: "Image 10" },
     { src: "/about/Sequoia3.JPG", alt: "Image 11" },
     { src: "/about/Sequoia1.JPG", alt: "Image 12" },

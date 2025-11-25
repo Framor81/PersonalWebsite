@@ -36,7 +36,7 @@ export default function AboutPage() {
       </button>
 
       {/* MAIN CONTENT */}
-      <div className={`w-full lg:ml-52 ${snapMode ? "snap-y snap-mandatory" : ""}`}>
+      <div className={`w-full lg:w-[calc(100%-13rem)] lg:ml-52 ${snapMode ? "snap-y snap-mandatory" : ""}`}>
         
         {/* INTRO */}
         <section 

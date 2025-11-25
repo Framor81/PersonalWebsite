@@ -12,12 +12,21 @@ export default function AboutPage() {
   const [snapMode, setSnapMode] = useState(true);
 
   useEffect(() => {
-    if (snapMode) {
-      document.documentElement.style.scrollSnapType = "y mandatory";
-    } else {
-      document.documentElement.style.scrollSnapType = "none";
-    }
+    // Only enable snap mode on desktop (lg breakpoint and above)
+    const checkScreenSize = () => {
+      const isDesktop = window.innerWidth >= 1024; // lg breakpoint
+      if (isDesktop && snapMode) {
+        document.documentElement.style.scrollSnapType = "y mandatory";
+      } else {
+        document.documentElement.style.scrollSnapType = "none";
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
     return () => {
+      window.removeEventListener("resize", checkScreenSize);
       document.documentElement.style.scrollSnapType = "none";
     };
   }, [snapMode]);
@@ -44,7 +53,7 @@ export default function AboutPage() {
         {/* INTRO */}
         <section 
           id="intro" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className="max-w-5xl w-full" style={{ marginLeft: 'var(--content-offset-left)' }}>
             {!snapMode && (
@@ -109,7 +118,7 @@ export default function AboutPage() {
         {/* EDUCATION */}
         <section 
           id="education" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Education</h2>
@@ -130,7 +139,7 @@ export default function AboutPage() {
         {/* PUBLICATIONS */}
         <section 
           id="publications" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Publications</h2>
@@ -141,7 +150,7 @@ export default function AboutPage() {
         {/* PROJECTS */}
         <section 
           id="projects" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full flex flex-col items-center`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground mb-16">Projects</h2>
@@ -154,7 +163,7 @@ export default function AboutPage() {
         {/* EXPERIENCE */}
         <section 
           id="experience" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Experience</h2>
@@ -242,7 +251,7 @@ export default function AboutPage() {
         {/* AWARDS */}
         <section 
           id="awards" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Awards & Honors</h2>
@@ -262,18 +271,20 @@ export default function AboutPage() {
         {/* GALLERY */}
         <section 
           id="gallery" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`min-h-screen flex items-center justify-center px-6 py-20 lg:py-0 lg:h-screen ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-6`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Gallery</h2>
-            <ImageGallery />
+            <div className="overflow-hidden">
+              <ImageGallery />
+            </div>
           </div>
         </section>
 
         {/* PERSONAL STORY */}
         <section 
           id="about-me" 
-          className={`h-screen flex items-center justify-center px-6 ${snapMode ? "snap-start" : ""}`}
+          className={`min-h-screen flex items-center justify-center px-6 py-20 lg:py-0 lg:h-screen ${snapMode ? "lg:snap-start" : ""}`}
         >
   <div
   className={`max-w-5xl w-full space-y-4`}

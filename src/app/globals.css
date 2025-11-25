@@ -13,6 +13,11 @@
 
   /* Content alignment offset - adjust this to shift content left/right for visual centering */
   --content-offset-left: 0rem; /* -ml-2 equivalent, change to adjust visual centering */
+
+  /* Viewport-based scaling: scales from 1x at 1280px to 1.5x at 2560px+ */
+  /* Formula: 1 + (viewport - 1280) / 2560, clamped between 1 and 1.5 */
+  /* At 1280px (80rem): scale = 1, At 1920px: scale ≈ 1.25, At 2560px (160rem): scale = 1.5 */
+  --viewport-scale: clamp(1, calc(1 + (100vw - 80rem) / 160rem), 1.5);
 }
 
 /* Map variables into Tailwind's theme system */
@@ -134,4 +139,22 @@ html::before {
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* -------------------------------------------
+   VIEWPORT-BASED SCALING
+   Scales content on larger monitors
+-------------------------------------------- */
+.viewport-scaled {
+  zoom: var(--viewport-scale);
+}
+
+/* Fallback for Firefox which doesn't support zoom */
+@supports not (zoom: 1) {
+  .viewport-scaled {
+    transform: scale(var(--viewport-scale));
+    transform-origin: top left;
+    width: calc(100% / var(--viewport-scale));
+    margin-left: calc((100% - 100% / var(--viewport-scale)) / 2);
+  }
 }

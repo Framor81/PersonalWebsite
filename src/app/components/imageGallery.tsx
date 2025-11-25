@@ -6,20 +6,20 @@ import { useState } from "react";
 // Placeholder image sets - replace with your actual images
 const imageSets = [
   [
-    { src: "/about/me_face.jpg", alt: "Image 1" },
-    { src: "/about/me_face.jpg", alt: "Image 2" },
-    { src: "/about/me_face.jpg", alt: "Image 3" },
-    { src: "/about/me_face.jpg", alt: "Image 4" },
-    { src: "/about/me_face.jpg", alt: "Image 5" },
-    { src: "/about/me_face.jpg", alt: "Image 6" },
+    { src: "/about/Tapia3.jpg", alt: "Image 1" },
+    { src: "/about/Tapia4.jpg", alt: "Image 2" },
+    { src: "/about/Tapia1.jpeg", alt: "Image 3" },
+    { src: "/about/Tapia5.jpg", alt: "Image 4" },
+    { src: "/about/Tapia2.jpg", alt: "Image 5" },
+    { src: "/about/Tapia7.PNG", alt: "Image 6" },
   ],
   [
-    { src: "/about/cool_me.JPG", alt: "Image 7" },
-    { src: "/about/cool_me.JPG", alt: "Image 8" },
-    { src: "/about/cool_me.JPG", alt: "Image 9" },
-    { src: "/about/cool_me.JPG", alt: "Image 10" },
-    { src: "/about/cool_me.JPG", alt: "Image 11" },
-    { src: "/about/cool_me.JPG", alt: "Image 12" },
+    { src: "/about/Ara.jpeg", alt: "Image 7" },
+    { src: "/about/RockClimbing.JPG", alt: "Image 8" },
+    { src: "/about/Pickup.JPG", alt: "Image 9" },
+    { src: "/about/Sequoia2.JPG", alt: "Image 10" },
+    { src: "/about/Sequoia3.JPG", alt: "Image 11" },
+    { src: "/about/Sequoia1.jpg", alt: "Image 12" },
   ],
   // Add more sets as needed
 ];

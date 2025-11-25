@@ -24,61 +24,44 @@ const mathCourses = [
   "Biostatistics (R)",
 ];
 
-type OpenCourse = { section: "cs" | "math"; index: number } | null;
-
 export default function CourseworkGrid() {
   const [openCS, setOpenCS] = useState(false);
   const [openMath, setOpenMath] = useState(false);
 
-  const [openCourse, setOpenCourse] = useState<OpenCourse>(null);
   const [showItems, setShowItems] = useState(false);
 
   // Trigger stagger reveal ONLY when a folder opens
   useEffect(() => {
     if (openCS || openMath) {
-      setTimeout(() => setShowItems(true), 180);
+      const timer = setTimeout(() => setShowItems(true), 180);
+      return () => clearTimeout(timer);
     } else {
-      setShowItems(false); // instant hide when closing
+      // Use timeout to avoid synchronous setState in effect
+      const timer = setTimeout(() => setShowItems(false), 0);
+      return () => clearTimeout(timer);
     }
   }, [openCS, openMath]);
 
-  const renderCourses = (courses: string[], section: "cs" | "math") => (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 pb-2">
+  const renderCourses = (courses: string[]) => (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-3 pb-1">
       {courses.map((course, index) => {
-        const isOpen = openCourse?.section === section && openCourse?.index === index;
-
         return (
           <div
             key={index}
-            onClick={() => setOpenCourse(isOpen ? null : { section, index })}
             className={`
-              cursor-pointer select-none rounded-xl p-4 
+              select-none rounded-xl p-3 
               transition-all duration-300 ease-in-out
-              transform hover:scale-[1.02] hover:translate-y-[-2px]
 
               bg-gray-400/20 backdrop-blur-md border border-gray-300/20
               shadow-[0_2px_8px_rgba(0,0,0,0.1),0_0_4px_rgba(255,255,255,0.05)]
-              hover:bg-gray-400/30 hover:border-gray-300/30
-              hover:shadow-[0_4px_12px_rgba(0,0,0,0.15),0_0_8px_rgba(255,255,255,0.1)]
-
-              ${isOpen ? "bg-gray-400/35 border-gray-300/40 shadow-[0_6px_16px_rgba(0,0,0,0.2),0_0_12px_rgba(255,255,255,0.15)] scale-[1.02]" : ""}
 
               ${showItems ? "animate-fadeInUp" : "opacity-0"}
               ${showItems ? `animation-delay-[${index * 60}ms]` : ""}
             `}
           >
-            <p className={`
-              font-semibold transition-all duration-300
-              ${isOpen ? "text-zinc-100 text-base mb-2" : "text-zinc-200 text-lg"}
-            `}>
+            <p className="font-semibold text-zinc-200 text-base">
               {course}
             </p>
-
-            {isOpen && (
-              <p className="text-zinc-300 text-sm leading-snug animate-fadeIn">
-                Placeholder description for {course}.
-              </p>
-            )}
           </div>
         );
       })}
@@ -123,7 +106,7 @@ export default function CourseworkGrid() {
             ${openCS ? "max-h-[2000px]" : "max-h-0"}
           `}
         >
-          {renderCourses(csCourses, "cs")}
+          {renderCourses(csCourses)}
         </div>
       </div>
 
@@ -162,7 +145,7 @@ export default function CourseworkGrid() {
             ${openMath ? "max-h-[2000px]" : "max-h-0"}
           `}
         >
-          {renderCourses(mathCourses, "math")}
+          {renderCourses(mathCourses)}
         </div>
       </div>
     </div>

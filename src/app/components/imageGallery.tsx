@@ -9,17 +9,17 @@ const imageSets = [
     { src: "/about/Tapia3.jpg", alt: "Image 1" },
     { src: "/about/Tapia4.jpg", alt: "Image 2" },
     { src: "/about/Tapia1.jpeg", alt: "Image 3" },
-    { src: "/about/Tapia5.jpg", alt: "Image 4" },
+    { src: "/about/Tapia5.JPG", alt: "Image 4" },
     { src: "/about/Tapia2.jpg", alt: "Image 5" },
     { src: "/about/Tapia7.PNG", alt: "Image 6" },
   ],
   [
     { src: "/about/Ara.jpeg", alt: "Image 7" },
-    { src: "/about/RockClimbing.JPG", alt: "Image 8" },
+    { src: "/about/RockClimbing.jpg", alt: "Image 8" },
     { src: "/about/Pickup.JPG", alt: "Image 9" },
     { src: "/about/Sequoia2.JPG", alt: "Image 10" },
     { src: "/about/Sequoia3.JPG", alt: "Image 11" },
-    { src: "/about/Sequoia1.jpg", alt: "Image 12" },
+    { src: "/about/Sequoia1.JPG", alt: "Image 12" },
   ],
   // Add more sets as needed
 ];

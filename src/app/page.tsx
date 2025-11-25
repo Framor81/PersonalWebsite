@@ -9,7 +9,7 @@ import Publications from "./components/publications";
 import TableOfContents from "./components/TableOfContents";
 
 export default function AboutPage() {
-  const [snapMode, setSnapMode] = useState(false);
+  const [snapMode, setSnapMode] = useState(true);
 
   useEffect(() => {
     if (snapMode) {
@@ -27,10 +27,10 @@ export default function AboutPage() {
       {/* LEFT-SIDE TABLE OF CONTENTS */}
       <TableOfContents />
 
-      {/* Toggle Button */}
+      {/* Toggle Button - Hidden */}
       <button
         onClick={() => setSnapMode(!snapMode)}
-        className="fixed top-4 right-4 z-50 px-4 py-2 rounded-lg bg-gray-400/20 backdrop-blur-md border border-gray-300/20 text-zinc-300 hover:bg-gray-400/30 hover:text-zinc-200 transition-all text-sm font-medium"
+        className="hidden fixed top-4 right-4 z-50 px-4 py-2 rounded-lg bg-gray-400/20 backdrop-blur-md border border-gray-300/20 text-zinc-300 hover:bg-gray-400/30 hover:text-zinc-200 transition-all text-sm font-medium"
         title={snapMode ? "Switch to continuous scroll" : "Switch to page snap mode"}
       >
         {snapMode ? "📄 Continuous" : "📑 Page Snap"}

@@ -1,67 +1,67 @@
 "use client";
 import { useState } from "react";
-
-const projects = [
-  { id: 1, title: "Placeholder" },
-  { id: 2, title: "Placeholder" },
-  { id: 3, title: "Placeholder" },
-];
+import Image from "next/image";
 
 export default function ProjectsShowcase() {
-  const [active, setActive] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="flex justify-center gap-16">
-      {projects.map((proj) => {
-        const isActive = proj.id === active;
-        const isDimmed = active !== null && !isActive;
+    <div className="flex justify-center">
+      <a
+        href="https://p-ickup.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="relative group"
+      >
+        <div
+          className={`
+            relative overflow-hidden rounded-xl
+            transition-all duration-500 ease-in-out
+            ${isHovered ? "w-[600px] h-[400px]" : "w-[300px] h-[300px]"}
+            bg-gray-400/20 backdrop-blur-md border border-gray-300/20
+            shadow-[0_2px_8px_rgba(0,0,0,0.1),0_0_4px_rgba(255,255,255,0.05)]
+            hover:bg-gray-400/25 hover:border-gray-300/30
+            hover:shadow-[0_4px_12px_rgba(0,0,0,0.15),0_0_8px_rgba(255,255,255,0.1)]
+          `}
+        >
+          {/* Background Image */}
+          {isHovered && (
+            <div className="absolute inset-0">
+              <Image
+                src="/about/p-ickupDashboard.jpg"
+                alt="P-ickup Dashboard"
+                fill
+                className="object-cover"
+              />
+              {/* Dark overlay for text readability */}
+              <div className="absolute inset-0 bg-black/60" />
+            </div>
+          )}
 
-        // Larger sizes (feel better)
-        const startSize = 200; // circle
-        const endSize = 400;   // expanded square
-
-        const size = isActive ? endSize : startSize;
-
-        // Morph progression (0 → 1)
-        const progress = isActive ? 1 : 0;
-
-        // Radius shrinks proportionally to size
-        const startRadius = startSize / 2; // perfect circle
-        const endRadius = 12;              // square softness
-
-        // Interpolated radius during expansion
-        const radius = startRadius + (endRadius - startRadius) * progress;
-
-        return (
-          <div
-            key={proj.id}
-            onMouseEnter={() => setActive(proj.id)}
-            onMouseLeave={() => setActive(null)}
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              borderRadius: `${radius}px`,
-
-              // KEY FIX:
-              // SAME transition for size + radius
-              transition:
-                "width 0.6s ease, height 0.6s ease, border-radius 0.6s ease",
-            }}
-            className={`
-              flex items-center justify-center cursor-pointer
-              text-center font-medium select-none
-              ${
-                isActive
-                  ? "bg-foreground text-background shadow-2xl"
-                  : "bg-zinc-700/40 text-zinc-300"
-              }
-              ${isDimmed ? "opacity-30 scale-70 translate-y-4" : ""}
-            `}
-          >
-            {isActive ? "Placeholder v2" : proj.title}
+          {/* Content */}
+          <div className="relative h-full flex items-center justify-center p-6">
+            {isHovered ? (
+              <div className="text-center space-y-4">
+                <h3 className="text-2xl font-semibold text-foreground mb-4">
+                  P-ickup
+                </h3>
+                <p className="text-zinc-200 leading-relaxed">
+                  Why pay $100+ for a ride to the airport? We help you split the cost and share the journey with fellow travelers.
+                </p>
+                <p className="text-zinc-300 text-sm mt-4">
+                  Utilized by Pomona College for coordinating transportation for over 1200 students
+                </p>
+              </div>
+            ) : (
+              <h3 className="text-2xl font-semibold text-foreground">
+                P-ickup
+              </h3>
+            )}
           </div>
-        );
-      })}
+        </div>
+      </a>
     </div>
   );
 }

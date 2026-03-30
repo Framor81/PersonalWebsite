@@ -110,6 +110,22 @@ export default function AboutPage() {
                   interested in robotics as a way to support and empower individuals by
                   reducing the physical burdens that limit their daily lives.
                 </p>
+
+                {/* P-ickup */}
+                <p className="text-lg text-zinc-300 leading-8">
+                  I also cofounded and led engineering for{" "}
+                  <a
+                    href="https://p-ickup.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground underline underline-offset-4 decoration-zinc-500 hover:decoration-zinc-300"
+                  >
+                    P-ickup
+                  </a>
+                  , a ride-sharing platform used by Claremont Colleges students that
+                  matches riders for shared airport trips, improving coordination and
+                  reducing costs.
+                </p>
               </div>
             </div>
           </div>

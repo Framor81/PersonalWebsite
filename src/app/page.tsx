@@ -51,32 +51,19 @@ export default function AboutPage() {
       >
         
         {/* INTRO */}
-        <section 
-          id="intro" 
-          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="intro"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className="max-w-5xl w-full" style={{ marginLeft: 'var(--content-offset-left)' }}>
-            {!snapMode && (
-              <div className="mb-8">
-                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight pr-22 text-center">
-                  <span className="block pl-4 sm:pl-16">Hello!</span>
-                </h1>
-                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight">
-                  <span className="block pl-8 sm:pl-8"> I&apos;m Francisco X. Morales Puente</span>
-                </h1>
-              </div>
-            )}
-            {snapMode && (
-              <div className="mb-8">
-                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight pr-22 text-center">
-                  <span className="block pl-4 sm:pl-16">Hello!</span>
-                </h1>
-                <h1 className="text-5xl sm:text-6xl font-bold text-foreground leading-tight">
-                  <span className="block pl-8 sm:pl-8">I&apos;m Francisco X. Morales Puente</span>
-                </h1>
-              </div>
-            )}
-
+            <div className="mb-8 text-center sm:text-left">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                Hello!
+              </h1>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight text-balance">
+                I&apos;m Francisco X. Morales Puente
+              </h1>
+            </div>
 
             {/* Image and Text Layout */}
             <div className="flex flex-col sm:flex-row items-center gap-8 mt-8">
@@ -132,9 +119,9 @@ export default function AboutPage() {
         </section>
 
         {/* EDUCATION */}
-        <section 
-          id="education" 
-          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="education"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Education</h2>
@@ -153,9 +140,9 @@ export default function AboutPage() {
         </section>
 
         {/* PUBLICATIONS */}
-        <section 
-          id="publications" 
-          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="publications"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Publications</h2>
@@ -164,9 +151,9 @@ export default function AboutPage() {
         </section>
 
         {/* PROJECTS */}
-        <section 
-          id="projects" 
-          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="projects"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full flex flex-col items-center`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground mb-16">Projects</h2>
@@ -177,9 +164,9 @@ export default function AboutPage() {
         </section>
 
         {/* EXPERIENCE */}
-        <section 
-          id="experience" 
-          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="experience"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold text-foreground">Experience</h2>
@@ -265,9 +252,9 @@ export default function AboutPage() {
 
 
         {/* AWARDS */}
-        <section 
-          id="awards" 
-          className={`h-screen flex items-center justify-center px-6 py-20 lg:py-0 ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="awards"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-4`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Awards & Honors</h2>
@@ -285,9 +272,9 @@ export default function AboutPage() {
         </section>
 
         {/* GALLERY */}
-        <section 
-          id="gallery" 
-          className={`min-h-screen flex items-center justify-center px-6 py-20 lg:py-0 lg:h-screen ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="gallery"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
           <div className={`max-w-5xl w-full space-y-6`} style={{ marginLeft: 'var(--content-offset-left)' }}>
             <h2 className="text-4xl font-semibold">Gallery</h2>
@@ -298,9 +285,9 @@ export default function AboutPage() {
         </section>
 
         {/* PERSONAL STORY */}
-        <section 
-          id="about-me" 
-          className={`min-h-screen flex items-center justify-center px-6 py-20 lg:py-0 lg:h-screen ${snapMode ? "lg:snap-start" : ""}`}
+        <section
+          id="about-me"
+          className={`min-h-screen flex items-center justify-center px-6 py-24 ${snapMode ? "lg:snap-start" : ""}`}
         >
   <div
   className={`max-w-5xl w-full space-y-4`}

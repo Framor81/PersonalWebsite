@@ -13,11 +13,19 @@
 
   /* Content alignment offset - adjust this to shift content left/right for visual centering */
   --content-offset-left: 0rem; /* -ml-2 equivalent, change to adjust visual centering */
+}
 
-  /* Viewport-based scaling: scales from 1x at 1280px to 1.5x at 2560px+ */
-  /* Formula: 1 + (viewport - 1280) / 2560, clamped between 1 and 1.5 */
-  /* At 1280px (80rem): scale = 1, At 1920px: scale ≈ 1.25, At 2560px (160rem): scale = 1.5 */
-  --viewport-scale: clamp(1, calc(1 + (100vw - 80rem) / 160rem), 1.5);
+/* -------------------------------------------
+   FLUID ROOT SIZING
+   Everything is rem-based, so scaling the root
+   font-size scales the whole design smoothly and
+   CONSISTENTLY across screen sizes — no zoom hacks,
+   no per-breakpoint jumps.
+   ~15px on small phones → 16px on laptops → ~19px
+   on very large monitors.
+-------------------------------------------- */
+html {
+  font-size: clamp(15px, 0.9rem + 0.25vw, 19px);
 }
 
 /* Map variables into Tailwind's theme system */
@@ -142,25 +150,13 @@ html::before {
 }
 
 /* -------------------------------------------
-   VIEWPORT-BASED SCALING
-   Scales content on larger monitors
+   RESPONSIVE SECTIONS
+   Sections are at least a full screen tall so the
+   snap/one-screen feel is preserved on large
+   displays, but they GROW to fit taller content
+   (long intro on a phone) instead of clipping it.
 -------------------------------------------- */
-.viewport-scaled {
-  zoom: var(--viewport-scale);
-}
-
-/* Fallback for Firefox which doesn't support zoom */
-@supports not (zoom: 1) {
-  .viewport-scaled {
-    transform: scale(var(--viewport-scale));
-    transform-origin: top left;
-    width: calc(100% / var(--viewport-scale));
-    margin-left: calc((100% - 100% / var(--viewport-scale)) / 2);
-  }
-}
-
-/* Adjust section heights to account for viewport scaling */
-/* When zoom scales content up, we need to reduce the base height proportionally */
 .viewport-scaled section {
-  height: calc(100vh / var(--viewport-scale));
+  min-height: 100vh;
+  min-height: 100svh; /* accounts for mobile browser chrome */
 }

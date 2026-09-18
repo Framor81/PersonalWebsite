@@ -2,14 +2,15 @@
 import { useEffect, useState } from "react";
 
 const sections = [
-  { id: "intro", label: "Intro" },
-  { id: "education", label: "Education" },
-  { id: "publications", label: "Publications" },
+  { id: "at-a-glance", label: "At a Glance" },
   { id: "projects", label: "Projects" },
+  { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
-  { id: "awards", label: "Awards & Honors" },
-  { id: "gallery", label: "Gallery" },
-  { id: "about-me", label: "More About Me" },
+  { id: "publications", label: "Publications" },
+  { id: "awards", label: "Awards" },
+  { id: "education", label: "Education" },
+  { id: "beyond", label: "Beyond the Code" },
+  { id: "contact", label: "Contact" },
 ];
 
 const LinkedInIcon = ({ className }: { className?: string }) => (
@@ -70,7 +71,7 @@ function SocialLinks({ iconClass = "w-8 h-8" }: { iconClass?: string }) {
 function scrollToSection(id: string) {
   const el = document.getElementById(id);
   if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
@@ -84,30 +85,28 @@ export default function TableOfContents() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const viewportHeight = window.innerHeight;
-
-          // Find which section is currently closest to the center of the viewport
-          let current: string | null = null;
-          let minDistance = Infinity;
+          // A section becomes active once its top crosses this line near the
+          // top of the viewport. This way every section highlights in turn,
+          // no matter how short it is, instead of only whichever one happens
+          // to sit in the viewport center.
+          const threshold = window.innerHeight * 0.3;
+          let current = sections[0].id;
 
           for (const section of sections) {
             const el = document.getElementById(section.id);
             if (!el) continue;
-
-            const rect = el.getBoundingClientRect();
-            const sectionCenter = rect.top + rect.height / 2;
-            const viewportCenter = viewportHeight / 2;
-            const distance = Math.abs(sectionCenter - viewportCenter);
-
-            if (rect.top < viewportHeight && rect.bottom > 0 && distance < minDistance) {
-              minDistance = distance;
+            if (el.getBoundingClientRect().top <= threshold) {
               current = section.id;
             }
           }
 
-          if (current) {
-            setActive((prev) => (prev !== current ? current! : prev));
+          // At the very bottom of the page the last section may be too short
+          // to ever cross the line, so force it active when we hit the end.
+          if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+            current = sections[sections.length - 1].id;
           }
+
+          setActive((prev) => (prev !== current ? current : prev));
           ticking = false;
         });
 

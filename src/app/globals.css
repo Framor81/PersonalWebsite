@@ -19,7 +19,7 @@
    FLUID ROOT SIZING
    Everything is rem-based, so scaling the root
    font-size scales the whole design smoothly and
-   CONSISTENTLY across screen sizes — no zoom hacks,
+   CONSISTENTLY across screen sizes, no zoom hacks,
    no per-breakpoint jumps.
    ~15px on small phones → 16px on laptops → ~19px
    on very large monitors.
@@ -48,7 +48,7 @@ body {
   /* Default text color before scroll adjustment */
   color: var(--foreground);
   min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -59,14 +59,19 @@ body {
    SCROLL-BASED TEXT COLOR ADJUSTMENT
    Text becomes darker as background darkens.
 -------------------------------------------- */
-/* Only headers change color on scroll */
+/* Only headers change color on scroll.
+   The blend toward --foreground is floored at 55% so headings keep
+   enough of the bright orange to stay readable at the bottom of a
+   long page instead of fading into the dark background. */
 h1, h2, h3 {
   color: color-mix(
     in srgb,
-    rgb(255, 117, 62) calc(100% * (1 - var(--scroll-progress))),
+    rgb(255, 117, 62) calc(100% * (1 - min(var(--scroll-progress), 0.55))),
     var(--foreground)
   );
   transition: color 0.2s linear;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 h1 span,
@@ -149,14 +154,3 @@ html::before {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
-/* -------------------------------------------
-   RESPONSIVE SECTIONS
-   Sections are at least a full screen tall so the
-   snap/one-screen feel is preserved on large
-   displays, but they GROW to fit taller content
-   (long intro on a phone) instead of clipping it.
--------------------------------------------- */
-.viewport-scaled section {
-  min-height: 100vh;
-  min-height: 100svh; /* accounts for mobile browser chrome */
-}

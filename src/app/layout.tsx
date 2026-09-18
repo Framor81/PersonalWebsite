@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Francisco Personal Website",
-  description: "My Personal Website!",
+  title: "Francisco Morales Puente",
+  description:
+    "AI Native Software Engineer at Accenture and Pomona College graduate in Computer Science and Mathematics. Building at the intersection of software, data, AI, and human-centered technology.",
 };
 
 export default function RootLayout({

@@ -22,7 +22,7 @@ const publications: Publication[] = [
     authors: "Francisco X. Morales Puente",
     conference: "2025 CMD-IT/ACM Richard Tapia Conference of Diversity in Computing Conference, Dallas, Texas, USA",
     date: "September 2025",
-    note: "Third place in the ACM Student Research Competition in the Undergraduate Division",
+    award: "3rd Place, ACM Student Research Competition, Undergraduate Division",
     pdfLink: "EyesInMotionPoster.pdf",
     posterLink: "SURP 2024 Poster.pdf",
     posterImage: "/about/Robot.jpeg",
@@ -49,8 +49,9 @@ const publications: Publication[] = [
     type: "Thesis",
     name: "Implementing Network Flows into Reinforcement Learning Rewards",
     authors: "Francisco X. Morales Puente",
-    date: "2025",
-    note: "Work in Progress Math Thesis",
+    conference: "Pomona College mathematics thesis",
+    date: "2025–2026",
+    note: "Work in progress",
   },
 ];
 

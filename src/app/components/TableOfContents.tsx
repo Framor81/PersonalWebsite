@@ -2,18 +2,82 @@
 import { useEffect, useState } from "react";
 
 const sections = [
-  { id: "intro", label: "Intro" },
-  { id: "education", label: "Education" },
-  { id: "publications", label: "Publications" },
+  { id: "at-a-glance", label: "At a Glance" },
   { id: "projects", label: "Projects" },
+  { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
-  { id: "awards", label: "Awards & Honors" },
-  { id: "gallery", label: "Gallery" },
-  { id: "about-me", label: "More About Me" },
+  { id: "publications", label: "Publications" },
+  { id: "awards", label: "Awards" },
+  { id: "education", label: "Education" },
+  { id: "beyond", label: "Beyond the Code" },
+  { id: "contact", label: "Contact" },
 ];
+
+const LinkedInIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+  </svg>
+);
+
+const GitHubIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+  </svg>
+);
+
+const ResumeIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+  </svg>
+);
+
+function SocialLinks({ iconClass = "w-8 h-8" }: { iconClass?: string }) {
+  return (
+    <>
+      <a
+        href="https://www.linkedin.com/in/francisco-morales-puente-a93479259/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-zinc-300 hover:text-blue-500 transition-colors"
+        title="LinkedIn"
+        aria-label="LinkedIn"
+      >
+        <LinkedInIcon className={iconClass} />
+      </a>
+      <a
+        href="https://github.com/Framor81"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-zinc-300 hover:text-zinc-100 transition-colors"
+        title="GitHub"
+        aria-label="GitHub"
+      >
+        <GitHubIcon className={iconClass} />
+      </a>
+      <a
+        href="/about/FranciscoResume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-zinc-300 hover:text-foreground transition-colors"
+        title="Resume"
+        aria-label="Resume"
+      >
+        <ResumeIcon className={iconClass} />
+      </a>
+    </>
+  );
+}
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
 
 export default function TableOfContents() {
   const [active, setActive] = useState<string>("intro");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     let ticking = false;
@@ -21,32 +85,28 @@ export default function TableOfContents() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const viewportHeight = window.innerHeight;
-          const scrollY = window.scrollY;
-          
-          // Find which section is currently in the center of the viewport
-          let current: string | null = null;
-          let minDistance = Infinity;
+          // A section becomes active once its top crosses this line near the
+          // top of the viewport. This way every section highlights in turn,
+          // no matter how short it is, instead of only whichever one happens
+          // to sit in the viewport center.
+          const threshold = window.innerHeight * 0.3;
+          let current = sections[0].id;
 
           for (const section of sections) {
             const el = document.getElementById(section.id);
             if (!el) continue;
-
-            const rect = el.getBoundingClientRect();
-            const sectionCenter = rect.top + rect.height / 2;
-            const viewportCenter = viewportHeight / 2;
-            const distance = Math.abs(sectionCenter - viewportCenter);
-
-            // If section is mostly visible and closest to center
-            if (rect.top < viewportHeight && rect.bottom > 0 && distance < minDistance) {
-              minDistance = distance;
+            if (el.getBoundingClientRect().top <= threshold) {
               current = section.id;
             }
           }
 
-          if (current) {
-            setActive(prev => prev !== current ? current! : prev);
+          // At the very bottom of the page the last section may be too short
+          // to ever cross the line, so force it active when we hit the end.
+          if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+            current = sections[sections.length - 1].id;
           }
+
+          setActive((prev) => (prev !== current ? current : prev));
           ticking = false;
         });
 
@@ -54,93 +114,93 @@ export default function TableOfContents() {
       }
     };
 
-    // Initial call
     handleScroll();
-    
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-     <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-52 px-6 backdrop-blur-md bg-black/20 border-r border-white/10 z-10 pointer-events-auto">
-      {/* Social Icons */}
-      <div className="flex items-center gap-4 pt-8 pb-8 relative z-30">
-        <a
-          href="https://www.linkedin.com/in/francisco-morales-puente-a93479259/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-zinc-300 hover:text-blue-500 transition-colors"
-          title="LinkedIn"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        </a>
-        <a
-          href="https://github.com/Framor81"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-zinc-300 hover:text-zinc-100 transition-colors"
-          title="GitHub"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-        </a>
-        <a
-          href="/about/FranciscoResume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-zinc-300 hover:text-foreground transition-colors"
-          title="Resume"
-        >
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-          </svg>
-        </a>
-      </div>
+    <>
+      {/* ---------- DESKTOP SIDEBAR ---------- */}
+      <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-52 px-6 backdrop-blur-md bg-black/20 border-r border-white/10 z-40 pointer-events-auto">
+        <div className="flex items-center gap-4 pt-8 pb-8 relative z-30">
+          <SocialLinks iconClass="w-8 h-8" />
+        </div>
 
-      <nav className="space-y-4 text-sm pt-4">
-        {sections.map(sec => (
-          <a
-            key={sec.id}
-            href={`#${sec.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              const el = document.getElementById(sec.id);
-              if (el) {
-                // Scroll to section - scroll snap will handle the positioning
-                el.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center"
-                });
-              }
-            }}
-            className={`
-              block transition-colors cursor-pointer relative z-20
-              ${active === sec.id 
-                ? "text-foreground font-semibold" 
-                : "text-zinc-400 hover:text-zinc-200"}
-            `}
+        <nav className="space-y-4 text-sm pt-4">
+          {sections.map((sec) => (
+            <a
+              key={sec.id}
+              href={`#${sec.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(sec.id);
+              }}
+              className={`block transition-colors cursor-pointer relative z-20 ${
+                active === sec.id
+                  ? "text-foreground font-semibold"
+                  : "text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              {sec.label}
+            </a>
+          ))}
+        </nav>
+      </aside>
+
+      {/* ---------- MOBILE TOP BAR ---------- */}
+      <header className="lg:hidden fixed top-0 inset-x-0 z-40 backdrop-blur-md bg-black/40 border-b border-white/10">
+        <div className="flex items-center justify-between px-4 h-14">
+          <button
+            onClick={() => scrollToSection("intro")}
+            className="font-bold text-foreground text-lg tracking-tight"
           >
-            {sec.label}
-          </a>
-        ))}
-      </nav>
-    </aside>
+            FXMP
+          </button>
+
+          <div className="flex items-center gap-4">
+            <SocialLinks iconClass="w-6 h-6" />
+            <button
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={menuOpen}
+              className="text-zinc-200 hover:text-foreground transition-colors ml-1"
+            >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                {menuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Collapsible section menu */}
+        {menuOpen && (
+          <nav className="animate-fadeIn border-t border-white/10 px-4 py-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm bg-black/40">
+            {sections.map((sec) => (
+              <a
+                key={sec.id}
+                href={`#${sec.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMenuOpen(false);
+                  scrollToSection(sec.id);
+                }}
+                className={`block transition-colors ${
+                  active === sec.id
+                    ? "text-foreground font-semibold"
+                    : "text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                {sec.label}
+              </a>
+            ))}
+          </nav>
+        )}
+      </header>
+    </>
   );
 }

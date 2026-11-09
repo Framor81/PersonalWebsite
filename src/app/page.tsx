@@ -18,6 +18,13 @@ const atAGlance = [
   { label: "Community", value: "Co-builder of P-ickup" },
 ];
 
+const coreStack = [
+  { label: "Languages", items: "Python, TypeScript, Java, C++, SQL" },
+  { label: "Web", items: "React, Next.js, Node.js, Tailwind CSS, Spring Boot" },
+  { label: "AI and ML", items: "LLM agents, agentic workflows, PyTorch, OpenCV" },
+  { label: "Infra", items: "Docker, Supabase, Linux, Prometheus, Grafana" },
+];
+
 const experience = [
   {
     company: "Accenture",
@@ -162,6 +169,18 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+
+            <div className={`${glassCard} p-5`}>
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#ff753e] mb-3">Core stack</p>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                {coreStack.map((group) => (
+                  <div key={group.label} className="flex gap-3">
+                    <dt className="w-24 shrink-0 text-zinc-400">{group.label}</dt>
+                    <dd className="text-zinc-200">{group.items}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </section>
 
@@ -170,20 +189,11 @@ export default function AboutPage() {
           <div className="max-w-5xl w-full space-y-8">
             <div className="space-y-2">
               <h2 className="text-4xl font-semibold text-foreground">Projects</h2>
-              <p className="text-zinc-400">A few things I&apos;ve built, from research to production.</p>
+              <p className="text-zinc-400">
+                Shipped products with real users, award-winning research, and the side projects I build for fun.
+              </p>
             </div>
             <Projects />
-          </div>
-        </section>
-
-        {/* ---------- TIMELINE / ABOUT ---------- */}
-        <section id="about" className="scroll-mt-20 flex justify-center px-6 py-20">
-          <div className="max-w-5xl w-full space-y-8">
-            <div className="space-y-2">
-              <h2 className="text-4xl font-semibold text-foreground">The short version</h2>
-              <p className="text-zinc-400">How I got from a high-school robotics team to human-centered engineering.</p>
-            </div>
-            <Timeline />
           </div>
         </section>
 
@@ -279,6 +289,17 @@ export default function AboutPage() {
                 <CourseworkGrid />
               </div>
             </details>
+          </div>
+        </section>
+
+        {/* ---------- TIMELINE / ABOUT ---------- */}
+        <section id="about" className="scroll-mt-20 flex justify-center px-6 py-20">
+          <div className="max-w-5xl w-full space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-semibold text-foreground">The short version</h2>
+              <p className="text-zinc-400">How I got from a high-school robotics team to human-centered engineering.</p>
+            </div>
+            <Timeline />
           </div>
         </section>
 

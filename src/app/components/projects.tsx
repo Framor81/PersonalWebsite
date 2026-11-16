@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Stat = { value: string; label: string };
+type Shot = { src: string; alt: string; caption: string };
 type ProjectLinkItem = { label: string; href: string; primary?: boolean };
 type Badge = "live" | "award" | "research" | "side" | "progress";
 
@@ -16,6 +19,8 @@ type FeaturedProject = {
   links: ProjectLinkItem[];
   imageSrc?: string;
   imageAlt?: string;
+  // Wide screenshots shown across the top of the card, first one is the main image.
+  gallery?: Shot[];
 };
 
 type SideProject = {
@@ -48,6 +53,63 @@ const featured: FeaturedProject[] = [
     ],
     tags: ["TypeScript", "React", "Java", "XMage", "Supabase", "Cloud deployment"],
     links: [{ label: "Play the live demo", href: "https://openarena-jack.duckdns.org/", primary: true }],
+    gallery: [
+      {
+        src: "/projects/openarena-combat.jpg",
+        alt: "OpenArena four-player Commander game during the declare attackers step",
+        caption: "Four-player combat: attackers drawn to the opponents they target",
+      },
+      {
+        src: "/projects/openarena-stack.jpg",
+        alt: "OpenArena showing the spell stack with a counterspell targeting another spell",
+        caption: "The stack, with each spell's target drawn on the board",
+      },
+      {
+        src: "/projects/openarena-2p.jpg",
+        alt: "OpenArena two-player Commander game in the main phase",
+        caption: "A two-player game in the main phase",
+      },
+    ],
+  },
+  {
+    title: "Cenzis",
+    badges: [{ kind: "live", text: "Live demo" }],
+    pitch:
+      "An embeddable product-feedback widget I'm co-building, where reporters earn credibility across companies so teams know whose reports to trust.",
+    stats: [
+      { value: "~68 KB", label: "one-script-tag widget" },
+      { value: "~160 ms", label: "AI triage per report" },
+      { value: "5", label: "sealed evaluation tests" },
+    ],
+    highlights: [
+      "Built the widget in vanilla TypeScript with Web Components and Shadow DOM, so it drops onto any site with a single script tag and no CSS clashes. Visitors can screenshot and annotate the page or record their interaction, with sensitive fields masked.",
+      "Designed a multi-tenant Supabase backend: Postgres row-level security, a Deno edge function that checks each site's allowed origins, private screenshot storage, and a trigger that recomputes every reporter's credibility.",
+      "Built a demo where TypeSafe's Jev model sorts incoming reports in about 160 ms while the routing stays in ordinary code the site owner controls, then measured it with five sealed tests and published every miss.",
+    ],
+    tags: ["TypeScript", "Web Components", "Supabase", "Postgres", "Next.js", "AI evaluation"],
+    links: [{ label: "Try the live demo", href: "https://cenzis-jev-demo.vercel.app/", primary: true }],
+    gallery: [
+      {
+        src: "/projects/cenzis-overview.jpg",
+        alt: "Cenzis and Jev demo overview page",
+        caption: "The demo: Jev reads a report's note and screenshot in about 160 ms",
+      },
+      {
+        src: "/projects/cenzis-jev-answers.jpg",
+        alt: "Jev's answers to the small yes or no questions about one report",
+        caption: "Jev's answers for one report, filed as a bug by plain code",
+      },
+      {
+        src: "/projects/cenzis-widget.jpg",
+        alt: "The Cenzis widget embedded on a mock checkout page",
+        caption: "The real widget, embedded with one script tag on a mock checkout",
+      },
+      {
+        src: "/projects/cenzis-inbox.jpg",
+        alt: "The Cenzis owner inbox that explains why each report was sorted",
+        caption: "The owner inbox shows the reason behind every sort",
+      },
+    ],
   },
   {
     title: "P-ickup",
@@ -205,6 +267,150 @@ function Highlights({ items }: { items: string[] }) {
   );
 }
 
+function Lightbox({
+  shots,
+  index,
+  onClose,
+  onMove,
+}: {
+  shots: Shot[];
+  index: number;
+  onClose: () => void;
+  onMove: (step: number) => void;
+}) {
+  // Keyboard controls + lock background scroll while open.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight") onMove(1);
+      else if (e.key === "ArrowLeft") onMove(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose, onMove]);
+
+  const shot = shots[index]!;
+  const navButton =
+    "absolute w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition-colors";
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 animate-fadeIn"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Expanded screenshot"
+    >
+      <button onClick={onClose} aria-label="Close" className={`${navButton} top-4 right-4`}>
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      {shots.length > 1 && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onMove(-1);
+            }}
+            aria-label="Previous screenshot"
+            className={`${navButton} left-3 sm:left-5 top-1/2 -translate-y-1/2`}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onMove(1);
+            }}
+            aria-label="Next screenshot"
+            className={`${navButton} right-3 sm:right-5 top-1/2 -translate-y-1/2`}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
+      <div
+        className="relative w-full max-w-6xl h-[75vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Image src={shot.src} alt={shot.alt} fill sizes="100vw" className="object-contain" priority />
+      </div>
+      <p className="mt-4 text-sm text-white/80 text-center max-w-2xl">
+        {shot.caption} <span className="text-white/50">· {index + 1} / {shots.length}</span>
+      </p>
+    </div>
+  );
+}
+
+function ProjectGallery({ shots, title }: { shots: Shot[]; title: string }) {
+  const [active, setActive] = useState(0);
+  const [open, setOpen] = useState(false);
+  const shot = shots[active]!;
+
+  const close = useCallback(() => setOpen(false), []);
+  const move = useCallback(
+    (step: number) => setActive((i) => (i + step + shots.length) % shots.length),
+    [shots.length]
+  );
+
+  return (
+    <div className="p-4 pb-0 space-y-3">
+      <button
+        onClick={() => setOpen(true)}
+        aria-label={`Expand ${title} screenshot`}
+        className="group relative block w-full aspect-[16/9] overflow-hidden rounded-lg border border-white/10 bg-black/40"
+      >
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 1000px"
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+        />
+        <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent px-4 pt-10 pb-3 text-left text-sm text-white/90">
+          {shot.caption}
+        </span>
+        <span className="absolute top-3 right-3 rounded-full bg-black/60 border border-white/15 px-2.5 py-1 text-xs text-white/85 opacity-0 group-hover:opacity-100 transition-opacity">
+          Click to expand
+        </span>
+      </button>
+
+      {shots.length > 1 && (
+        <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${shots.length}, minmax(0, 1fr))` }}>
+          {shots.map((s, i) => (
+            <button
+              key={s.src}
+              onClick={() => setActive(i)}
+              aria-label={`Show screenshot: ${s.caption}`}
+              aria-pressed={i === active}
+              className={`relative aspect-[16/9] overflow-hidden rounded-md border transition-all ${
+                i === active
+                  ? "border-[#ff753e] ring-1 ring-[#ff753e]/60"
+                  : "border-white/10 opacity-60 hover:opacity-100"
+              }`}
+            >
+              <Image src={s.src} alt="" fill sizes="200px" className="object-cover object-top" />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Portal to <body>: the card's backdrop-blur would otherwise trap a fixed overlay inside it. */}
+      {open && createPortal(<Lightbox shots={shots} index={active} onClose={close} onMove={move} />, document.body)}
+    </div>
+  );
+}
+
 export default function Projects() {
   return (
     <div className="w-full space-y-10">
@@ -213,9 +419,13 @@ export default function Projects() {
         {featured.map((project) => (
           <article
             key={project.title}
-            className={`${cardBase} overflow-hidden hover:border-gray-300/30 flex flex-col md:flex-row`}
+            className={`${cardBase} overflow-hidden hover:border-gray-300/30 flex flex-col ${
+              project.gallery ? "" : "md:flex-row"
+            }`}
           >
-            {project.imageSrc && (
+            {project.gallery && <ProjectGallery shots={project.gallery} title={project.title} />}
+
+            {!project.gallery && project.imageSrc && (
               <div className="relative w-full h-52 md:h-auto md:w-56 lg:w-64 shrink-0 bg-zinc-800/40">
                 <Image
                   src={project.imageSrc}

@@ -13,6 +13,10 @@ type Publication = {
   pdfLink?: string; // Path to PDF file in /publications folder
   posterLink?: string; // Path to poster PDF file in /publications folder
   posterImage?: string; // Path to poster image in /publications folder
+  field?: string; // Thesis field, e.g. "Computer Science"
+  advisor?: string; // Thesis advisor
+  summary?: string; // One or two sentences shown on thesis cards
+  imageFit?: "cover" | "contain";
 };
 
 const publications: Publication[] = [
@@ -49,26 +53,96 @@ const publications: Publication[] = [
     type: "Thesis",
     name: "Eyes in Continued Motion: Enhancing Gaze Controlled Systems for Safe Assistive Robotic Interaction",
     authors: "Francisco X. Morales Puente",
-    conference: "Pomona College computer science senior thesis, advised by Professor Anthony Clark",
+    field: "Computer Science",
+    advisor: "Professor Anthony Clark",
     date: "May 2026",
+    summary: "A webcam-only gaze interface that lets users draw paths with their eyes, paired with live floor, wall, and person segmentation. It selected the correct region of a 3x3 grid 82.89% of the time across 135 trials.",
     pdfLink: "EyesInContinuedMotion_CSSeniorThesis.pdf",
+    posterImage: "/publications/CSThesisGazeDemo.webp",
+    imageFit: "cover",
   },
   {
     type: "Thesis",
     name: "Implementing Network Flows into Reinforcement Learning",
     authors: "Francisco X. Morales Puente",
-    conference: "Pomona College mathematics senior thesis, advised by Dr. Konrad Aguilar",
+    field: "Mathematics",
+    advisor: "Dr. Konrad Aguilar",
     date: "2025–2026",
+    summary: "A framework for dynamic reward design that uses shadow prices from a linear program to penalize time and energy use based on how constrained the agent is at each step.",
     award: "Distinction in the Mathematics Senior Exercise",
     pdfLink: "NetworkFlowsRL_MathThesis.pdf",
+    posterImage: "/publications/MathThesisGridWorld.png",
+    imageFit: "contain",
   },
 ];
+
+function ThesisCard({ pub }: { pub: Publication }) {
+  const pdfHref = pub.pdfLink ? `/publications/${pub.pdfLink}` : undefined;
+  return (
+    <article className="group relative overflow-hidden rounded-2xl border border-amber-400/30 bg-gradient-to-br from-amber-400/[0.12] via-gray-400/20 to-gray-400/10 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all duration-300 hover:border-amber-400/50 hover:shadow-[0_10px_40px_rgba(251,191,36,0.12)]">
+      <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-amber-300 to-amber-500/40" aria-hidden />
+      <div className="flex flex-col md:flex-row">
+        {pub.posterImage && (
+          <a
+            href={pdfHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`relative block w-full h-52 md:h-auto md:min-h-[15rem] md:w-80 shrink-0 overflow-hidden ${pub.imageFit === "contain" ? "bg-white" : "bg-zinc-900/60"}`}
+            title="Read the thesis"
+          >
+            <Image
+              src={pub.posterImage}
+              alt={`${pub.name} figure`}
+              fill
+              sizes="(max-width: 768px) 100vw, 320px"
+              className={`${pub.imageFit === "contain" ? "object-contain p-3" : "object-cover object-top"} transition-transform duration-500 group-hover:scale-[1.03]`}
+            />
+          </a>
+        )}
+        <div className="flex-1 space-y-3 p-5 sm:p-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-300">
+              Senior Thesis{pub.field ? ` · ${pub.field}` : ""}
+            </span>
+            <span className="text-xs text-zinc-400">{pub.date}</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-semibold text-foreground leading-tight">{pub.name}</h3>
+          {pub.summary && <p className="text-zinc-300 text-sm leading-relaxed">{pub.summary}</p>}
+          <p className="text-zinc-400 text-sm">
+            Pomona College{pub.advisor ? ` · Advised by ${pub.advisor}` : ""}
+          </p>
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            {pdfHref && (
+              <a
+                href={pdfHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-blue-400/40 bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-300 hover:bg-blue-500/20 hover:text-foreground transition-colors"
+              >
+                Read the thesis
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+            )}
+            {pub.award && (
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400/10 px-3 py-1.5 text-sm text-amber-200">
+                <span aria-hidden>🏆</span> {pub.award}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function Publications() {
   return (
     <div className="space-y-4">
       {publications.map((pub, index) => {
-        const hasImageBox = pub.type !== "Thesis";
+        if (pub.type === "Thesis") return <ThesisCard key={index} pub={pub} />;
+        const hasImageBox = true;
         const isWorkInProgress = pub.note?.toLowerCase().includes("work in progress") || false;
         
         return (
@@ -76,8 +150,8 @@ export default function Publications() {
           key={index}
           className={`flex ${hasImageBox ? 'gap-4' : ''} ${isWorkInProgress ? 'p-3' : 'p-4'} rounded-xl bg-gray-400/20 backdrop-blur-md ${isWorkInProgress ? 'border border-gray-300/3' : 'border border-gray-300/20'} shadow-[0_2px_8px_rgba(0,0,0,0.1),0_0_4px_rgba(255,255,255,0.05)] hover:bg-gray-400/25 ${isWorkInProgress ? 'hover:border-gray-300/5' : 'hover:border-gray-300/30'} transition-all duration-300`}
         >
-          {/* Image placeholder on the left - only show if not Thesis */}
-          {pub.type !== "Thesis" && (
+          {/* Image box on the left */}
+          {hasImageBox && (
             <div 
               className={`w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded-lg overflow-hidden bg-zinc-800/30 border border-gray-300/20 flex items-center justify-center ${pub.pdfLink ? 'cursor-pointer hover:bg-zinc-800/40 transition-colors' : ''}`}
               onClick={pub.pdfLink ? () => window.open(`/publications/${pub.pdfLink}`, '_blank') : undefined}

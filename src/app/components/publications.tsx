@@ -29,7 +29,7 @@ const publications: Publication[] = [
     date: "May 2026",
     pdfLink: "EyesInContinuedMotion_CSSeniorThesis.pdf",
     posterImage: "/publications/CSThesisGazeDemo.webp",
-    concepts: ["Computer Vision", "Gaze Estimation", "CNN", "MediaPipe", "Semantic Segmentation", "SegFormer", "Human-Robot Interaction", "Assistive Technology", "Real-Time Systems", "Python", "OpenCV"],
+    concepts: ["Computer Vision", "Gaze Estimation", "CNN", "Semantic Segmentation", "Human-Robot Interaction"],
   },
   {
     type: "Math Thesis",
@@ -42,7 +42,7 @@ const publications: Publication[] = [
     award: "Distinction in the Mathematics Senior Exercise",
     pdfLink: "NetworkFlowsRL_MathThesis.pdf",
     posterImage: "/publications/MathThesisGridWorld.png",
-    concepts: ["Optimization", "Linear Programming", "LP Duality", "Shadow Prices", "Reinforcement Learning", "Markov Decision Processes", "Constrained MDPs", "Reward Design", "Network Flows", "Bipartite Matching"],
+    concepts: ["Optimization", "Linear Programming", "Reinforcement Learning", "Network Flows", "Reward Design"],
   },
   {
     type: "Conference + Poster",

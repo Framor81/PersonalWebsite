@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 type Publication = {
-  type: "Poster" | "Conference" | "Conference + Poster" | "Publication" | "Thesis";
+  type: "Poster" | "Conference" | "Conference + Poster" | "Publication" | "Thesis" | "CS Senior Project" | "Math Thesis";
   name: string;
   authors: string;
   conference?: string;
@@ -14,9 +14,36 @@ type Publication = {
   posterLink?: string; // Path to poster PDF file in /publications folder
   posterImage?: string; // Path to poster image in /publications folder
   advisor?: string; // Thesis advisor
+  concepts?: string[]; // Key concepts shown as tags
+  featured?: boolean; // Highlighted and listed first
 };
 
 const publications: Publication[] = [
+  {
+    type: "CS Senior Project",
+    featured: true,
+    name: "Eyes in Continued Motion: Enhancing Gaze Controlled Systems for Safe Assistive Robotic Interaction",
+    authors: "Francisco X. Morales Puente",
+    conference: "Pomona College, Computer Science Senior Project",
+    advisor: "Professor Anthony Clark",
+    date: "May 2026",
+    pdfLink: "EyesInContinuedMotion_CSSeniorThesis.pdf",
+    posterImage: "/publications/CSThesisGazeDemo.webp",
+    concepts: ["Computer Vision", "Gaze Estimation", "CNN", "MediaPipe", "Semantic Segmentation", "SegFormer", "Human-Robot Interaction", "Assistive Technology", "Real-Time Systems", "Python", "OpenCV"],
+  },
+  {
+    type: "Math Thesis",
+    featured: true,
+    name: "Implementing Network Flows into Reinforcement Learning",
+    authors: "Francisco X. Morales Puente",
+    conference: "Pomona College, Mathematics Senior Thesis",
+    advisor: "Dr. Konrad Aguilar",
+    date: "2025–2026",
+    award: "Distinction in the Mathematics Senior Exercise",
+    pdfLink: "NetworkFlowsRL_MathThesis.pdf",
+    posterImage: "/publications/MathThesisGridWorld.png",
+    concepts: ["Optimization", "Linear Programming", "LP Duality", "Shadow Prices", "Reinforcement Learning", "Markov Decision Processes", "Constrained MDPs", "Reward Design", "Network Flows", "Bipartite Matching"],
+  },
   {
     type: "Conference + Poster",
     name: "Eyes in Motion - Utilizing Eye Tracking for Assistive Technology",
@@ -46,27 +73,6 @@ const publications: Publication[] = [
     pdfLink: "SCR2024Submission.pdf",
     posterImage: "/publications/2024Poster.jpg",
   },
-  {
-    type: "Thesis",
-    name: "Eyes in Continued Motion: Enhancing Gaze Controlled Systems for Safe Assistive Robotic Interaction",
-    authors: "Francisco X. Morales Puente",
-    conference: "Pomona College, Computer Science Senior Thesis",
-    advisor: "Professor Anthony Clark",
-    date: "May 2026",
-    pdfLink: "EyesInContinuedMotion_CSSeniorThesis.pdf",
-    posterImage: "/publications/CSThesisGazeDemo.webp",
-  },
-  {
-    type: "Thesis",
-    name: "Implementing Network Flows into Reinforcement Learning",
-    authors: "Francisco X. Morales Puente",
-    conference: "Pomona College, Mathematics Senior Thesis",
-    advisor: "Dr. Konrad Aguilar",
-    date: "2025–2026",
-    award: "Distinction in the Mathematics Senior Exercise",
-    pdfLink: "NetworkFlowsRL_MathThesis.pdf",
-    posterImage: "/publications/MathThesisGridWorld.png",
-  },
 ];
 
 export default function Publications() {
@@ -79,7 +85,7 @@ export default function Publications() {
         return (
         <div
           key={index}
-          className={`flex ${hasImageBox ? 'gap-4' : ''} ${isWorkInProgress ? 'p-3' : 'p-4'} rounded-xl bg-gray-400/20 backdrop-blur-md ${isWorkInProgress ? 'border border-gray-300/3' : 'border border-gray-300/20'} shadow-[0_2px_8px_rgba(0,0,0,0.1),0_0_4px_rgba(255,255,255,0.05)] hover:bg-gray-400/25 ${isWorkInProgress ? 'hover:border-gray-300/5' : 'hover:border-gray-300/30'} transition-all duration-300`}
+          className={`flex ${hasImageBox ? 'gap-4' : ''} ${isWorkInProgress ? 'p-3' : 'p-4'} rounded-xl backdrop-blur-md shadow-[0_2px_8px_rgba(0,0,0,0.1),0_0_4px_rgba(255,255,255,0.05)] transition-all duration-300 ${pub.featured ? 'bg-gray-400/25 border border-amber-400/40 ring-1 ring-amber-400/10 hover:bg-gray-400/30 hover:border-amber-400/60' : `bg-gray-400/20 hover:bg-gray-400/25 ${isWorkInProgress ? 'border border-gray-300/3 hover:border-gray-300/5' : 'border border-gray-300/20 hover:border-gray-300/30'}`}`}
         >
           {/* Image box on the left */}
           {hasImageBox && (
@@ -108,7 +114,7 @@ export default function Publications() {
           <div className="flex-1 space-y-1">
             {/* Type badge */}
             <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wide">
+              <span className={`text-xs font-semibold uppercase tracking-wide ${pub.featured ? 'text-amber-300' : 'text-zinc-400'}`}>
                 {pub.type}
               </span>
               {pub.pdfLink && (
@@ -167,7 +173,7 @@ export default function Publications() {
             {/* Conference - only show if it exists */}
             {pub.conference && (
               <p className="text-zinc-300 text-sm leading-snug">
-                <span className="font-medium">{pub.type === "Thesis" ? "Institution:" : "Conference:"}</span> {pub.conference}
+                <span className="font-medium">{pub.advisor ? "Institution:" : "Conference:"}</span> {pub.conference}
               </p>
             )}
 
@@ -203,6 +209,17 @@ export default function Publications() {
                   {pub.award || pub.note}
                 </p>
               </div>
+            )}
+
+            {/* Concepts */}
+            {pub.concepts && pub.concepts.length > 0 && (
+              <ul className="flex flex-wrap gap-1.5 pt-2" aria-label="Concepts">
+                {pub.concepts.map((c) => (
+                  <li key={c} className="text-xs rounded-full border border-gray-300/20 bg-white/5 px-2.5 py-1 text-zinc-300">
+                    {c}
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>

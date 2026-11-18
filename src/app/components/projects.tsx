@@ -32,7 +32,7 @@ const featured: FeaturedProject[] = [
     proofPoints: [
       "Earned 3rd Place in the undergraduate ACM Student Research Competition at Tapia 2025 with the first version, tested on a JetBot",
       "Rebuilt the tracker with MediaPipe and a small custom CNN trained on about 5 minutes of personal calibration data",
-      "Selected the correct region of a 3x3 grid 82.89% of the time across 135 trials",
+      "Selected the correct cell of a 3x3 grid in 112 of 135 trials",
       "Added SegFormer floor, wall, and person segmentation with movement-direction cues for the people in view",
     ],
     tags: ["Python", "MediaPipe", "OpenCV", "Computer Vision", "Accessibility"],

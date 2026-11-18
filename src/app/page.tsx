@@ -213,7 +213,7 @@ export default function AboutPage() {
           <div className="max-w-5xl w-full space-y-4">
             <div className="space-y-2">
               <h2 className="text-4xl font-semibold text-foreground">Publications</h2>
-              <p className="text-zinc-400">Peer-reviewed research, posters, and an in-progress thesis.</p>
+              <p className="text-zinc-400">Peer-reviewed research, posters, and my two senior theses.</p>
             </div>
             <Publications />
           </div>

@@ -47,11 +47,20 @@ const publications: Publication[] = [
   },
   {
     type: "Thesis",
-    name: "Implementing Network Flows into Reinforcement Learning Rewards",
+    name: "Eyes in Continued Motion: Enhancing Gaze Controlled Systems for Safe Assistive Robotic Interaction",
     authors: "Francisco X. Morales Puente",
-    conference: "Pomona College mathematics thesis",
+    conference: "Pomona College computer science senior thesis, advised by Professor Anthony Clark",
+    date: "May 2026",
+    pdfLink: "EyesInContinuedMotion_CSSeniorThesis.pdf",
+  },
+  {
+    type: "Thesis",
+    name: "Implementing Network Flows into Reinforcement Learning",
+    authors: "Francisco X. Morales Puente",
+    conference: "Pomona College mathematics senior thesis, advised by Dr. Konrad Aguilar",
     date: "2025–2026",
-    note: "Work in progress",
+    award: "Distinction in the Mathematics Senior Exercise",
+    pdfLink: "NetworkFlowsRL_MathThesis.pdf",
   },
 ];
 
